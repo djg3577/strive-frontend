@@ -8,7 +8,7 @@ function UserRoutes() {
   return createBrowserRouter(
     createRoutesFromElements(
       <Route>
-        <Route path="/signup" element={<GuardedRoute Component={SignUp} isPublic/>} />
+        <Route path="/signUp" element={<GuardedRoute Component={SignUp} isPublic/>} />
         <Route path="/home" element={<GuardedRoute Component={Home} isPublic />} />
         <Route path="/login" element={<GuardedRoute Component={Login} />} />
       </Route>,
