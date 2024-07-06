@@ -1,0 +1,17 @@
+#AppSpec for Starting
+
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/stc/frontend #Target directory for deployment
+
+permissions:
+  - object: /var/www/stc/frontend
+file_exists_behavior: OVERWRITE
+hooks:
+
+  ApplicationStart:
+    - location: scripts/start.sh
+      timeout: 300
+      runas: ec2-user

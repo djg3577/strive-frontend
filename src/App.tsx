@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react'
+import './App.css'
+import User from './store/user'
+import { useHookstate } from "@hookstate/core";
+import Auth from './store/auth'
+import { RouterProvider } from "react-router-dom";
+import UserRoutes from './routes/UserRoutes'
 
 function App() {
+  const userState = useHookstate(User.state)
+  useEffect(() => {
+    if (!userState.token.get()) return;
+    Auth.decodeJWT();
+  }, [userState.token.get()]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <RouterProvider router={UserRoutes()}/>
+    </>
+  )
 }
 
-export default App;
+export default App

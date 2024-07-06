@@ -1,0 +1,17 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+    commands:
+
+      - echo Installing source NPM dependencies...
+      - echo before..
+      - pwd
+      - ls
+      - npm ci
+      - npm run build
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
