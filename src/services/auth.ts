@@ -4,15 +4,15 @@ import axios from "./axios"
 
 export default {
   login(credentials: UserDTO){
-    return axios.post("/auth/sign-in", credentials)
+    return axios.post("/auth/login", credentials)
   },
   signUp(credentials: UserDTO){
     return axios.post("/auth/sign-up", credentials)
   },
   validateCode(code: string){
-    return axios.post("/auth/validate-code", { code })
+    return axios.post("/auth/verify-email", { code })
   },
   decodeJWT(){
-    return axios.get("/auth/decode-jwt")
+    return axios.post("/auth/decode-jwt")
   }
 }

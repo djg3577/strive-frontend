@@ -1,11 +1,13 @@
 import ActivitiesStore from "@/store/activity";
+import User from "@/store/user";
 import { useState } from "react";
 
 function CreateActivity() {
   const [type, setType] = useState("");
   const [date, setDate] = useState("");
   const [duration, setDuration] = useState(0);
-  const userId = 2
+  const user = User.state.user.get();
+  const userId = user?.id
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

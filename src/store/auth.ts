@@ -33,7 +33,7 @@ async function validateCode(code: string) {
 
 async function decodeJWT() {
   const { data } = await auth.decodeJWT();
-  User.state.user.set(data.user);
+  User.state.user.set(data);
 }
 
 const Auth = {
