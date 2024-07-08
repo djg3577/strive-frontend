@@ -5,8 +5,13 @@ async function createActivity(activity: Activity){
   return activities.createActivity(activity);
 }
 
+async function getActivityTotals(){
+  return activities.getActivityTotals();
+}
+
 const ActivitiesStore = {
-  createActivity
+  createActivity,
+  getActivityTotals
 }
 
 export default ActivitiesStore;

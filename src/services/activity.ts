@@ -12,6 +12,9 @@ export interface Activity {
 export default {
   createActivity: async (activity: Activity) => {
     return axios.post("/activities", activity)
+  },
+  getActivityTotals: async () => {
+    return axios.get("/activities")
   }
 
 }

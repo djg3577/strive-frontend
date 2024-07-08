@@ -1,6 +1,6 @@
 import ActivitiesStore from "@/store/activity";
 import User from "@/store/user";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function CreateActivity() {
   const [type, setType] = useState("");
@@ -29,7 +29,7 @@ function CreateActivity() {
     <div className="container">
       <div className="row">
         <div className="col-12">
-          <h1>Create Activity</h1>
+          <h1>Log Activity</h1>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="type">Type</label>
@@ -64,9 +64,53 @@ function CreateActivity() {
               />
             </div>
             <button type="submit" className="btn btn-primary">
-              Create
+            Log
             </button>
           </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ActivityTotals(){
+  const [activityTotals, setActivityTotals] = useState({});
+
+  useEffect(() => {
+    const fetchActivityTotals = async () => {
+      const response = await ActivitiesStore.getActivityTotals();
+      setActivityTotals(response.data.activity_totals);
+    }
+    fetchActivityTotals();
+  }, []);
+
+  const convertMinutesToHoursAndMinutes = (totalMinutes:number) => {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours} hours ${minutes} minutes`;
+  }
+
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="col-12">
+          <h1>Activity Totals</h1>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Activity</th>
+                <th>Total Time</th>
+              </tr>
+            </thead>
+            <tbody>
+            {Object.entries(activityTotals).map(([activity, totalMinutes]) => (
+                <tr key={activity}>
+                  <td>{activity}</td>
+                  <td>{convertMinutesToHoursAndMinutes(totalMinutes as number)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -77,6 +121,7 @@ function Activities() {
   return (
     <>
       <CreateActivity></CreateActivity>
+      <ActivityTotals></ActivityTotals>
     </>
   );
 }
