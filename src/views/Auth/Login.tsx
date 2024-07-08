@@ -26,7 +26,7 @@ function Login() {
   const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     Auth.login(loginData);
-    navigate("/home");
+    navigate("/activities");
   };
 
   return (

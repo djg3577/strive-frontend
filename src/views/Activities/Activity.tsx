@@ -116,7 +116,7 @@ function ActivityTotals(){
     </div>
   );
 }
-
+// TODO: ADD A DROPDOWN THAT THE USER CAN CLICK FROM PAST ACTIVITIES SO THEY CAN ADD TIME TO PAST ACTIVITY INSTEAD OF CREATING A NEW ONE
 function Activities() {
   return (
     <>
