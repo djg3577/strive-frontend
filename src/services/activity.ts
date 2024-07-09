@@ -4,7 +4,7 @@ import axios from "./axios";
 export interface Activity {
   ID?: number;
   user_id: number;
-  type: string;
+  activity_name: string;
   duration: number;
   date: string;
 }
