@@ -1,66 +1,45 @@
 import ActivitiesStore from "@/store/activity";
 import User from "@/store/user";
-import { useEffect, useRef, useState } from "react";
-import CalHeatmap from 'cal-heatmap';
+import { useEffect, useState } from "react";
+import 'react-calendar-heatmap/dist/styles.css';
+import CalendarHeatmap from 'react-calendar-heatmap';
+import './heatmap.css';
 
-
-// !! FIX THE HEATMAP HERE
-const ActivityHeatmap = () => {
-  const calendarRef = useRef(null);
-  const [activityData, setActivityData] = useState([]);
-
+const Heatmap = () => {
+  const [activityDates, setActivityDates] = useState([]);
   useEffect(() => {
-    const fetchActivityData = async () => {
-      try {
-        const response = await ActivitiesStore.getActivityTotals(); // Assuming this method exists
-        const activityTotals = response.data.activity_totals
-        const formattedData = Object.entries(activityTotals).map((activity: { date: any; duration: any; }) => ({
-          date: activity.date,
-          value: activity.duration
-        }));
-        setActivityData(formattedData);
-      } catch (error) {
-        console.error("Failed to fetch activity data", error);
-      }
-    };
-
-    fetchActivityData();
-  }, []);
-
-  useEffect(() => {
-    if (activityData.length > 0 && calendarRef.current) {
-      const cal = new CalHeatmap();
-      cal.paint({
-        itemSelector: calendarRef.current,
-        range: 12,
-        domain: {
-          type: 'month',
-          gutter: 1,
-          label: { text: 'MMM', textAlign: 'start', position: 'top' }
-        },
-        subDomain: { type: 'day', radius: 3 },
-        data: {
-          source: activityData,
-          x: 'date',
-          y: 'value'
-        },
-        date: {
-          start: new Date(new Date().getFullYear(), 0, 1), // Start from January 1st of current year
-        },
-        scale: {
-          color: {
-            range: ['#ff0000', '#0000ff'], // Adjust color range as needed
-            interpolate: 'prgn',
-            type: 'linear',
-            domain: [0, 100] // Adjust based on your duration range
-          }
-        },
-        theme: 'light'
-      });
+    const fetchActivityDates = async () => {
+      const response = await ActivitiesStore.getActivityDates();
+      setActivityDates(response.data.activity_dates);
     }
-  }, [activityData]);
-
-  return <div ref={calendarRef}></div>;
+    fetchActivityDates();
+  }, []);
+  return (
+    <div className="heatmap-container">
+      <CalendarHeatmap
+        startDate={new Date('2024-01-01')}
+        endDate={new Date('2024-12-31')}
+        values={activityDates}
+        classForValue={(value) => {
+          if (!value) {
+            return 'color-empty';
+          }
+          if (value.count > 5) {
+            return 'color-scale-6';
+          }
+          return `color-scale-${value.count}`;
+        }}
+        tooltipDataAttrs={(value: { date: any; count: any; }) => {
+          return {
+            'data-tip': value.date
+              ? `${value.date}: ${value.count} activities`
+              : 'No activities',
+          };
+        }}
+        showWeekdayLabels={true}
+      />
+    </div>
+  );
 };
 
 
@@ -184,7 +163,7 @@ function Activities() {
     <>
       <CreateActivity></CreateActivity>
       <ActivityTotals></ActivityTotals>
-      <ActivityHeatmap></ActivityHeatmap>
+      <Heatmap ></Heatmap>
     </>
   );
 }

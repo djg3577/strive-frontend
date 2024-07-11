@@ -15,6 +15,8 @@ export default {
   },
   getActivityTotals: async () => {
     return axios.get("/activities")
-  }
-
+  },
+  getActivityDates: async () => {
+    return axios.get("/activities/dates")
+  },
 }

@@ -9,9 +9,14 @@ async function getActivityTotals(){
   return activities.getActivityTotals();
 }
 
+async function getActivityDates(){
+  return activities.getActivityDates();
+}
+
 const ActivitiesStore = {
   createActivity,
-  getActivityTotals
+  getActivityTotals,
+  getActivityDates
 }
 
 export default ActivitiesStore;
