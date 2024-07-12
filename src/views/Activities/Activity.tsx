@@ -157,16 +157,26 @@ function ActivityTotals(){
     </div>
   );
 }
-// TODO: ADD A DROPDOWN THAT THE USER CAN CLICK FROM PAST ACTIVITIES SO THEY CAN ADD TIME TO PAST ACTIVITY INSTEAD OF CREATING A NEW ONE
+
+function Leaderboard(){
+  return (
+    <div>
+      <h1>Leaderboard</h1>
+    </div>
+  );
+}
+
 function Activities() {
   return (
     <>
       <CreateActivity></CreateActivity>
       <ActivityTotals></ActivityTotals>
       <Heatmap ></Heatmap>
+      <Leaderboard></Leaderboard>
     </>
   );
 }
+// TODO: ADD A DROPDOWN THAT THE USER CAN CLICK FROM PAST ACTIVITIES SO THEY CAN ADD TIME TO PAST ACTIVITY INSTEAD OF CREATING A NEW ONE
 
 
 export default Activities;

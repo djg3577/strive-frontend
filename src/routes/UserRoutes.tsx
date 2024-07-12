@@ -9,7 +9,7 @@ import Layout from "./Layout";
 function UserRoutes() {
   return createBrowserRouter(
     createRoutesFromElements(
-      <Route element={<Layout />}>
+      <Route element={ <Layout /> }>
         <Route path="/signUp" element={<GuardedRoute Component={SignUp} isPublic/>} />
         <Route path="/home" element={<GuardedRoute Component={Home} isPublic />} />
         <Route path="/login" element={<GuardedRoute Component={Login} isPublic />} />
