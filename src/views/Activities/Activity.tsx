@@ -5,6 +5,63 @@ import "react-calendar-heatmap/dist/styles.css";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "./heatmap.css";
 
+interface UserScore {
+  username: string;
+  score: number;
+}
+const Leaderboard = () => {
+  const [scores, setScores] = useState<UserScore[]>([]);
+
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:8080/ws");
+
+    socket.onopen = () => {
+      console.log("WebSocket connection established");
+    };
+
+    socket.onmessage = (event) => {
+      console.log("WebSocket message received:", event.data);
+      const message: UserScore[] = JSON.parse(event.data);
+      setScores(message.sort((a, b) => b.score - a.score)); // Sort in descending order
+    };
+
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    socket.onclose = (event) => {
+      console.log("WebSocket connection closed:", event);
+    };
+// !! INVESTIGATE WHT IT CLOSES IMMEDIATELY BUT IT STILL WORKS
+    return () => {
+      console.log("Cleaning up WebSocket connection");
+      socket.close();
+    };
+  }, []);
+
+  return (
+    <div>
+      <h1>Leaderboard</h1>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {scores.map((score, index) => (
+            <tr key={index}>
+              <td>{score.username}</td>
+              <td>{score.score}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 const Heatmap = () => {
   const [activityDates, setActivityDates] = useState([]);
   useEffect(() => {
@@ -151,14 +208,6 @@ function ActivityTotals() {
           </table>
         </div>
       </div>
-    </div>
-  );
-}
-
-function Leaderboard() {
-  return (
-    <div>
-      <h1>Leaderboard</h1>
     </div>
   );
 }
