@@ -1,23 +1,24 @@
-import { useEffect } from 'react'
-import './App.css'
-import User from './store/user'
+import { useEffect } from "react";
+import "./App.css";
+import User from "./store/user";
 import { useHookstate } from "@hookstate/core";
-import Auth from './store/auth'
+import Auth from "./store/auth";
 import { RouterProvider } from "react-router-dom";
-import UserRoutes from './routes/UserRoutes'
+import UserRoutes from "./routes/UserRoutes";
 
 function App() {
-  const userState = useHookstate(User.state)
+  const userState = useHookstate(User.state);
   useEffect(() => {
-    if (!userState.token.get()) return;
+    const token = userState.token.get() || localStorage.getItem('githubToken');
+    if (!token) return;
     Auth.decodeJWT();
   }, [userState.token.get()]);
 
   return (
     <>
-      <RouterProvider router={UserRoutes()}/>
+      <RouterProvider router={UserRoutes()} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

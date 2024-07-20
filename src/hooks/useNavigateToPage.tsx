@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { To, useNavigate } from "react-router";
 
-function useNavigateToPage(){
+function useNavigateToPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -10,7 +10,7 @@ function useNavigateToPage(){
 
   return (page: To) => {
     navigate(page);
-  }
+  };
 }
 
 export default useNavigateToPage;

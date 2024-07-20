@@ -1,45 +1,36 @@
-import { SignUpContext } from "@/context/SignUpContext";
-import { SignUpForm } from "@/hooks/useSignUp";
-import { useContext, useState } from "react";
-import { Control } from "react-hook-form";
-type Base = {
-  control: Control<SignUpForm>;
-  required: boolean;
-}
+import axios from "@/services/axios";
+import Auth from "@/store/auth";
+import { useEffect } from "react";
 
-interface CredentialsProps {
-  base: Base
-  onClick: () => void;
-}
+const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
+const GITHUB_SECRET = import.meta.env.VITE_GITHUB_SECRET;
+const GITHUB_REDIRECT_URI = "http://localhost:5173/signup";
 
-function Credentials({ base, onClick}: CredentialsProps){
-  return (
-    <form>
-      <input {...base} name="email" placeholder="Email" />
-      <input {...base} name="password" placeholder="Password" />
-      <input {...base} name="username" placeholder="Username" />
-      <button onClick={onClick}>Next</button>
-    </form>
-  )
-}
+function InitialSignUp() {
+  const handleGitHubLogin = () => {
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT_URI}`;
+  };
 
-function InitialSignUp(){
-  const { control, handleSubmit } = useContext(SignUpContext);
-  const [showForm, setShowForm] = useState(false);
-  const base = {
-    control: control as Control<SignUpForm>,
-    required: true
-  }
+  useEffect(() => {
+    const fetchGitHubToken = async (code: string) => {
+      try {
+        await Auth.loginWithGitHub(code);
+      } catch (error) {
+      }
+    };
 
-  const onClick = handleSubmit(() =>
-    setShowForm(true)
-  );
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    if (code) {
+      fetchGitHubToken(code);
+    }
+  }, []);
 
   return (
     <div>
-      <Credentials base={base} onClick={onClick} />
+      <button onClick={handleGitHubLogin}>Sign Up with GitHub</button>
     </div>
-  )
+  );
 }
 
 export default InitialSignUp;

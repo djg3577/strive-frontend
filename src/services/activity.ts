@@ -1,6 +1,5 @@
 import axios from "./axios";
 
-
 export interface Activity {
   ID?: number;
   user_id: number;
@@ -11,12 +10,12 @@ export interface Activity {
 
 export default {
   createActivity: async (activity: Activity) => {
-    return axios.post("/activities", activity)
+    return axios.post("/activities", activity);
   },
   getActivityTotals: async () => {
-    return axios.get("/activities")
+    return axios.get("/activities");
   },
   getActivityDates: async () => {
-    return axios.get("/activities/dates")
+    return axios.get("/activities/dates");
   },
-}
+};

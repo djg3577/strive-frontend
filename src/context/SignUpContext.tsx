@@ -12,4 +12,4 @@ type SignUpContextInitialState = {
   validateCode: () => Promise<void>;
 };
 
-export const SignUpContext =  createContext<SignUpContextInitialState>({} as SignUpContextInitialState);
+export const SignUpContext = createContext<SignUpContextInitialState>({} as SignUpContextInitialState);

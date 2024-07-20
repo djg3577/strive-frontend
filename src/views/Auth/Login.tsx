@@ -1,5 +1,5 @@
 import Auth from "@/store/auth";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 interface LoginData {
   email: string;
@@ -34,29 +34,11 @@ function Login() {
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <p>Enter email</p>
-        <input
-          type="email"
-          name="email"
-          value={loginData.email}
-          onChange={handleInputChange}
-          required
-        />
+        <input type="email" name="email" value={loginData.email} onChange={handleInputChange} required />
         <p>Enter password</p>
-        <input
-          type="password"
-          name="password"
-          value={loginData.password}
-          onChange={handleInputChange}
-          required
-        />
+        <input type="password" name="password" value={loginData.password} onChange={handleInputChange} required />
         <p>Enter username</p>
-        <input
-          type="text"
-          name="username"
-          value={loginData.username}
-          onChange={handleInputChange}
-          required
-        />
+        <input type="text" name="username" value={loginData.username} onChange={handleInputChange} required />
         <div></div>
         <button type="submit">Login</button>
       </form>

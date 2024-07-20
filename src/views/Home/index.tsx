@@ -5,11 +5,21 @@ const Home = () => {
         <div className="logo">STRIVE</div>
         <nav>
           <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#pricing">Pricing</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li>
+              <a href="#home">Home</a>
+            </li>
+            <li>
+              <a href="#features">Features</a>
+            </li>
+            <li>
+              <a href="#pricing">Pricing</a>
+            </li>
+            <li>
+              <a href="#about">About</a>
+            </li>
+            <li>
+              <a href="#contact">Contact</a>
+            </li>
           </ul>
         </nav>
       </header>
@@ -63,12 +73,12 @@ const Home = () => {
         <p>Our mission is to help developers achieve their goals without sacrificing their health.</p>
         <div className="team">
           <div className="team-member">
-            <img src="team1.jpg" alt="Team Member 1"/>
+            <img src="team1.jpg" alt="Team Member 1" />
             <h3>John Doe</h3>
             <p>CEO & Founder</p>
           </div>
           <div className="team-member">
-            <img src="team2.jpg" alt="Team Member 2"/>
+            <img src="team2.jpg" alt="Team Member 2" />
             <h3>Jane Smith</h3>
             <p>CTO</p>
           </div>
@@ -78,8 +88,8 @@ const Home = () => {
       <section id="contact">
         <h2>Contact Us</h2>
         <form>
-          <input type="text" placeholder="Name" required/>
-          <input type="email" placeholder="Email" required/>
+          <input type="text" placeholder="Name" required />
+          <input type="email" placeholder="Email" required />
           <textarea placeholder="Message" required></textarea>
           <button type="submit">Send Message</button>
         </form>
@@ -92,9 +102,15 @@ const Home = () => {
 
       <footer>
         <ul>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">FAQs</a></li>
+          <li>
+            <a href="#">Terms of Service</a>
+          </li>
+          <li>
+            <a href="#">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="#">FAQs</a>
+          </li>
         </ul>
         <p>© 2024 STRIVE. All rights reserved.</p>
       </footer>

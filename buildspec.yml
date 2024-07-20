@@ -4,7 +4,6 @@ phases:
     runtime-versions:
       nodejs: 16
     commands:
-
       - echo Installing source NPM dependencies...
       - echo before..
       - pwd
@@ -13,5 +12,5 @@ phases:
       - npm run build
 artifacts:
   files:
-    - '**/*'
+    - "**/*"
   discard-paths: no

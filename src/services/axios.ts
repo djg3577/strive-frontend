@@ -18,11 +18,15 @@ const handleLogout = async () => {
 
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token") || localStorage.getItem("githubToken");
+    const tokenType = localStorage.getItem("tokenType");
     if (token) {
+      if (tokenType === "github") {
+        config.headers.Authorization = `GitHub ${token}`;
+      } else 
       config.headers.Authorization = `Bearer ${token}`;
     }
-    return {...config};
+    return { ...config };
   },
   (error) => {
     return Promise.reject(error);

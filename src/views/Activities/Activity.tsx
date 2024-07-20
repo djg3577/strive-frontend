@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "react-calendar-heatmap/dist/styles.css";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "./heatmap.css";
+import Auth from "@/store/auth";
 
 interface UserScore {
   username: string;
@@ -20,7 +21,6 @@ const Leaderboard = () => {
     };
 
     socket.onmessage = (event) => {
-      console.log("WebSocket message received:", event.data);
       const message: UserScore[] = JSON.parse(event.data);
       setScores(message.sort((a, b) => b.score - a.score)); // Sort in descending order
     };
@@ -32,7 +32,7 @@ const Leaderboard = () => {
     socket.onclose = (event) => {
       console.log("WebSocket connection closed:", event);
     };
-// !! INVESTIGATE WHT IT CLOSES IMMEDIATELY BUT IT STILL WORKS
+    // !! INVESTIGATE WHT IT CLOSES IMMEDIATELY BUT IT STILL WORKS
     return () => {
       console.log("Cleaning up WebSocket connection");
       socket.close();
@@ -102,7 +102,7 @@ function CreateActivity() {
   const [date, setDate] = useState("");
   const [duration, setDuration] = useState(0);
   const user = User.state.user.get();
-  const userId = user?.id;
+  const userId = user.id;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -212,6 +212,18 @@ function ActivityTotals() {
   );
 }
 
+function LogOut() {
+  const handleLogOut = () => {
+    Auth.logout();
+  };
+
+  return (
+    <button className="btn btn-primary" onClick={handleLogOut}>
+      Log Out
+    </button>
+  );
+}
+
 function Activities() {
   return (
     <>
@@ -219,6 +231,7 @@ function Activities() {
       <ActivityTotals></ActivityTotals>
       <Heatmap></Heatmap>
       <Leaderboard></Leaderboard>
+      <LogOut></LogOut>
     </>
   );
 }

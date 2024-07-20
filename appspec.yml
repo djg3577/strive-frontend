@@ -10,7 +10,6 @@ permissions:
   - object: /var/www/stc/frontend
 file_exists_behavior: OVERWRITE
 hooks:
-
   ApplicationStart:
     - location: scripts/start.sh
       timeout: 300

@@ -36,7 +36,7 @@ header nav ul li a {
 }
 
 #hero {
-  background: url('hero-bg.jpg') no-repeat center center/cover;
+  background: url("hero-bg.jpg") no-repeat center center/cover;
   color: white;
   text-align: center;
   padding: 100px 20px;
@@ -101,7 +101,8 @@ section {
   align-items: center;
 }
 
-#contact form input, #contact form textarea {
+#contact form input,
+#contact form textarea {
   width: 80%;
   padding: 10px;
   margin: 10px 0;

@@ -5,11 +5,7 @@ import InitialSignUp from "./InitialSignUp";
 function SignUpContent() {
   const { step } = useContext(SignUpContext);
 
-  return (
-    <>
-      {step === 1 && <InitialSignUp />}
-    </>
-  )
+  return <>{step === 1 && <InitialSignUp />}</>;
 }
 
 export default SignUpContent;
