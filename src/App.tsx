@@ -5,6 +5,7 @@ import { useHookstate } from "@hookstate/core";
 import Auth from "./store/auth";
 import { RouterProvider } from "react-router-dom";
 import UserRoutes from "./routes/UserRoutes";
+import "./index.css";
 
 function App() {
   const userState = useHookstate(User.state);

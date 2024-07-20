@@ -1,120 +1,85 @@
+import { Outlet } from "react-router-dom";
+import striveLogo from "../../assets/STRIVELOGO.png";
+
 const Home = () => {
   return (
-    <div>
-      <header>
-        <div className="logo">STRIVE</div>
-        <nav>
-          <ul>
-            <li>
-              <a href="#home">Home</a>
-            </li>
-            <li>
-              <a href="#features">Features</a>
-            </li>
-            <li>
-              <a href="#pricing">Pricing</a>
-            </li>
-            <li>
-              <a href="#about">About</a>
-            </li>
-            <li>
-              <a href="#contact">Contact</a>
-            </li>
-          </ul>
-        </nav>
-      </header>
-
-      <section id="hero">
-        <h1>Achieve More with STRIVE</h1>
-        <p>Balance your work and health seamlessly.</p>
-        <button>Get Started</button>
-      </section>
-
-      <section id="features">
-        <h2>Features</h2>
-        <div className="feature">
-          <i className="icon">🏆</i>
-          <h3>Track your goals</h3>
-          <p>Keep track of your achievements and stay motivated.</p>
-        </div>
-        <div className="feature">
-          <i className="icon">⏰</i>
-          <h3>Optimize your time</h3>
-          <p>Manage your time efficiently and boost productivity.</p>
-        </div>
-        <div className="feature">
-          <i className="icon">💪</i>
-          <h3>Stay healthy</h3>
-          <p>Maintain a healthy lifestyle while working hard.</p>
-        </div>
-      </section>
-
-      <section id="pricing">
-        <h2>Pricing</h2>
-        <div className="pricing-plan">
-          <h3>Basic</h3>
-          <p>$9.99/month</p>
-          <p>Essential features to get started.</p>
-        </div>
-        <div className="pricing-plan">
-          <h3>Pro</h3>
-          <p>$19.99/month</p>
-          <p>Advanced features for professionals.</p>
-        </div>
-        <div className="pricing-plan">
-          <h3>Enterprise</h3>
-          <p>$29.99/month</p>
-          <p>All features for large teams.</p>
-        </div>
-      </section>
-
-      <section id="about">
-        <h2>About Us</h2>
-        <p>Our mission is to help developers achieve their goals without sacrificing their health.</p>
-        <div className="team">
-          <div className="team-member">
-            <img src="team1.jpg" alt="Team Member 1" />
-            <h3>John Doe</h3>
-            <p>CEO & Founder</p>
+    <>
+    <div className="font-sans">
+      <section id="hero" className="bg-gray-100 text-red-600 text-center py-32 relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-10 bg-no-repeat bg-center"
+          style={{
+            backgroundImage: `url(${striveLogo})`,
+            backgroundSize: "75%",
+          }}
+        />
+        <div className="relative container mx-auto px-4 flex flex-col justify-between h-full">
+          <div className="mb-32">
+            <h1 className="text-5xl font-bold">Achieve More with STRIVE</h1>
           </div>
-          <div className="team-member">
-            <img src="team2.jpg" alt="Team Member 2" />
-            <h3>Jane Smith</h3>
-            <p>CTO</p>
+          <div className="mt-24 -mb-15">
+            <p className="text-2xl">Balance your work and health seamlessly.</p>
+            <button className="bg-white text-red-600 px-10 py-3 rounded-full font-bold hover:bg-red-100 transition duration-300">
+              Get Started
+            </button>
           </div>
         </div>
       </section>
 
-      <section id="contact">
-        <h2>Contact Us</h2>
-        <form>
-          <input type="text" placeholder="Name" required />
-          <input type="email" placeholder="Email" required />
-          <textarea placeholder="Message" required></textarea>
-          <button type="submit">Send Message</button>
+      <section id="features" className="py-20 bg-gray-100">
+        <h2 className="text-3xl font-bold text-center mb-12">Features</h2>
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              icon: "🏆",
+              title: "Track your goals",
+              description: "Keep track of your achievements and stay motivated.",
+            },
+            {
+              icon: "⏰",
+              title: "Optimize your time",
+              description: "Manage your time efficiently and boost productivity.",
+            },
+            { icon: "💪", title: "Stay healthy", description: "Maintain a healthy lifestyle while working hard." },
+          ].map((feature, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+              <i className="text-4xl mb-4 block">{feature.icon}</i>
+              <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+              <p>{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="contact" className="py-20">
+        <h2 className="text-3xl font-bold text-center mb-12">Contact Us</h2>
+        <form className="max-w-lg mx-auto">
+          <input type="text" placeholder="Name" required className="w-full mb-4 p-2 border rounded" />
+          <input type="email" placeholder="Email" required className="w-full mb-4 p-2 border rounded" />
+          <textarea placeholder="Message" required className="w-full mb-4 p-2 border rounded h-32"></textarea>
+          <button
+            type="submit"
+            className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700 w-full"
+          >
+            Send Message
+          </button>
         </form>
-        <div className="social-media">
-          <a href="#">Facebook</a>
-          <a href="#">Twitter</a>
-          <a href="#">LinkedIn</a>
+        <div className="flex justify-center space-x-4 mt-8">
+          {["Facebook", "Twitter", "LinkedIn"].map((platform) => (
+            <a key={platform} href="#" className="text-red-600 hover:text-red-800">
+              {platform}
+            </a>
+          ))}
         </div>
       </section>
 
-      <footer>
-        <ul>
-          <li>
-            <a href="#">Terms of Service</a>
-          </li>
-          <li>
-            <a href="#">Privacy Policy</a>
-          </li>
-          <li>
-            <a href="#">FAQs</a>
-          </li>
-        </ul>
-        <p>© 2024 STRIVE. All rights reserved.</p>
+      <footer className="bg-gray-800 text-white py-8">
+        <div className="container mx-auto">
+          <p className="text-center">© 2024 STRIVE. All rights reserved.</p>
+        </div>
       </footer>
     </div>
+    </>
   );
 };
 

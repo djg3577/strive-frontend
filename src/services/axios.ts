@@ -23,8 +23,7 @@ instance.interceptors.request.use(
     if (token) {
       if (tokenType === "github") {
         config.headers.Authorization = `GitHub ${token}`;
-      } else 
-      config.headers.Authorization = `Bearer ${token}`;
+      } else config.headers.Authorization = `Bearer ${token}`;
     }
     return { ...config };
   },

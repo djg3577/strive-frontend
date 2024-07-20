@@ -41,20 +41,20 @@ const Leaderboard = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Leaderboard</h1>
-      <table className="table">
+    <div className="bg-white p-6 rounded-lg shadow-md mt-8">
+      <h2 className="text-2xl font-bold text-red-600 mb-4">Leaderboard</h2>
+      <table className="w-full">
         <thead>
-          <tr>
-            <th>Username</th>
-            <th>Score</th>
+          <tr className="text-left">
+            <th className="pb-2">Username</th>
+            <th className="pb-2">Score</th>
           </tr>
         </thead>
         <tbody>
           {scores.map((score, index) => (
-            <tr key={index}>
-              <td>{score.username}</td>
-              <td>{score.score}</td>
+            <tr key={index} className="border-t">
+              <td className="py-2">{score.username}</td>
+              <td className="py-2">{score.score}</td>
             </tr>
           ))}
         </tbody>
@@ -73,27 +73,24 @@ const Heatmap = () => {
     fetchActivityDates();
   }, [User.state.user.get()]);
   return (
-    <div className="heatmap-container">
-      <CalendarHeatmap
-        startDate={new Date("2024-01-01")}
-        endDate={new Date("2024-12-31")}
-        values={activityDates}
-        classForValue={(value) => {
-          if (!value) {
-            return "color-empty";
-          }
-          if (value.count > 5) {
-            return "color-scale-6";
-          }
-          return `color-scale-${value.count}`;
-        }}
-        tooltipDataAttrs={(value: { date: any; count: any }) => {
-          return {
+    <div className="bg-white p-6 rounded-lg shadow-md mt-8">
+      <h2 className="text-2xl font-bold text-red-600 mb-4">Activity Heatmap</h2>
+      <div className="heatmap-container">
+        <CalendarHeatmap
+          startDate={new Date("2024-01-01")}
+          endDate={new Date("2024-12-31")}
+          values={activityDates}
+          classForValue={(value) => {
+            if (!value) return "color-empty";
+            if (value.count > 5) return "color-scale-6";
+            return `color-scale-${value.count}`;
+          }}
+          tooltipDataAttrs={(value: { date: any; count: any }) => ({
             "data-tip": value.date ? `${value.date}: ${value.count} activities` : "No activities",
-          };
-        }}
-        showWeekdayLabels={true}
-      />
+          })}
+          showWeekdayLabels={true}
+        />
+      </div>
     </div>
   );
 };
@@ -122,49 +119,51 @@ function CreateActivity() {
     }
   };
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-12">
-          <h1>Log Activity</h1>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="ActivityName">ActivityName</label>
-              <input
-                type="text"
-                className="form-control"
-                id="ActivityName"
-                value={ActivityName}
-                onChange={(e) => setActivityName(e.target.value)}
-                placeholder="Enter type"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="date">Date</label>
-              <input
-                type="date"
-                className="form-control"
-                id="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="duration">Duration</label>
-              <input
-                type="number"
-                className="form-control"
-                id="duration"
-                value={duration}
-                onChange={(e) => setDuration(Number(e.target.value))}
-                placeholder="Enter duration"
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Log
-            </button>
-          </form>
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold text-red-600 mb-4">Log Activity</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label htmlFor="ActivityName" className="block text-gray-700 font-bold mb-2">
+            Activity Name
+          </label>
+          <input
+            type="text"
+            className="w-full p-2 border rounded"
+            id="ActivityName"
+            value={ActivityName}
+            onChange={(e) => setActivityName(e.target.value)}
+            placeholder="Enter activity type"
+          />
         </div>
-      </div>
+        <div className="mb-4">
+          <label htmlFor="date" className="block text-gray-700 font-bold mb-2">
+            Date
+          </label>
+          <input
+            type="date"
+            className="w-full p-2 border rounded"
+            id="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="duration" className="block text-gray-700 font-bold mb-2">
+            Duration (minutes)
+          </label>
+          <input
+            type="number"
+            className="w-full p-2 border rounded"
+            id="duration"
+            value={duration}
+            onChange={(e) => setDuration(Number(e.target.value))}
+            placeholder="Enter duration"
+          />
+        </div>
+        <button type="submit" className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700 w-full">
+          Log Activity
+        </button>
+      </form>
     </div>
   );
 }
@@ -173,7 +172,7 @@ function ActivityTotals() {
   const [activityTotals, setActivityTotals] = useState({});
 
   useEffect(() => {
-    console.log("THIS IS RUNNING")
+    console.log("THIS IS RUNNING");
     const fetchActivityTotals = async () => {
       const response = await ActivitiesStore.getActivityTotals();
       setActivityTotals(response.data.activity_totals);
@@ -186,30 +185,25 @@ function ActivityTotals() {
     const minutes = totalMinutes % 60;
     return `${hours} hours ${minutes} minutes`;
   };
-
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-12">
-          <h1>Activity Totals</h1>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Activity</th>
-                <th>Total Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.entries(activityTotals).map(([activity, totalMinutes]) => (
-                <tr key={activity}>
-                  <td>{activity}</td>
-                  <td>{convertMinutesToHoursAndMinutes(totalMinutes as number)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold text-red-600 mb-4">Activity Totals</h2>
+      <table className="w-full">
+        <thead>
+          <tr className="text-left">
+            <th className="pb-2">Activity</th>
+            <th className="pb-2">Total Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(activityTotals).map(([activity, totalMinutes]) => (
+            <tr key={activity} className="border-t">
+              <td className="py-2">{activity}</td>
+              <td className="py-2">{convertMinutesToHoursAndMinutes(totalMinutes as number)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -234,7 +228,7 @@ function HandleGitHubLogin() {
   return <></>;
 }
 
-function LogOut() {
+const LogOut = () => {
   const navigate = useNavigate();
 
   const handleLogOut = () => {
@@ -243,22 +237,32 @@ function LogOut() {
   };
 
   return (
-    <button className="btn btn-primary" onClick={handleLogOut}>
+    <button 
+      className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700"
+      onClick={handleLogOut}
+    >
       Log Out
     </button>
   );
-}
+};
 
 function Activities() {
   return (
-    <>
-    <HandleGitHubLogin></HandleGitHubLogin>
-      <CreateActivity></CreateActivity>
-      <ActivityTotals></ActivityTotals>
-      <Heatmap></Heatmap>
-      <Leaderboard></Leaderboard>
-      <LogOut></LogOut>
-    </>
+    <div className="font-sans bg-gray-100 min-h-screen">
+      <HandleGitHubLogin />
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold text-red-600 text-center mb-8">Your Activities</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <CreateActivity />
+          <ActivityTotals />
+        </div>
+        <Heatmap />
+        <Leaderboard />
+        <div className="text-center mt-8">
+          <LogOut />
+        </div>
+      </div>
+    </div>
   );
 }
 // TODO: ADD A DROPDOWN THAT THE USER CAN CLICK FROM PAST ACTIVITIES SO THEY CAN ADD TIME TO PAST ACTIVITY INSTEAD OF CREATING A NEW ONE
