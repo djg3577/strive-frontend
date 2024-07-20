@@ -5,6 +5,7 @@ import "react-calendar-heatmap/dist/styles.css";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "./heatmap.css";
 import Auth from "@/store/auth";
+import { useNavigate } from "react-router-dom";
 
 interface UserScore {
   username: string;
@@ -70,7 +71,7 @@ const Heatmap = () => {
       setActivityDates(response.data.activity_dates);
     };
     fetchActivityDates();
-  }, []);
+  }, [User.state.user.get()]);
   return (
     <div className="heatmap-container">
       <CalendarHeatmap
@@ -172,12 +173,13 @@ function ActivityTotals() {
   const [activityTotals, setActivityTotals] = useState({});
 
   useEffect(() => {
+    console.log("THIS IS RUNNING")
     const fetchActivityTotals = async () => {
       const response = await ActivitiesStore.getActivityTotals();
       setActivityTotals(response.data.activity_totals);
     };
     fetchActivityTotals();
-  }, []);
+  }, [User.state.user.get()]);
 
   const convertMinutesToHoursAndMinutes = (totalMinutes: number) => {
     const hours = Math.floor(totalMinutes / 60);
@@ -212,9 +214,32 @@ function ActivityTotals() {
   );
 }
 
+function HandleGitHubLogin() {
+  useEffect(() => {
+    const fetchGitHubToken = async (code: string) => {
+      try {
+        await Auth.loginWithGitHub(code);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    if (code) {
+      fetchGitHubToken(code);
+    }
+  }, []);
+
+  return <></>;
+}
+
 function LogOut() {
+  const navigate = useNavigate();
+
   const handleLogOut = () => {
     Auth.logout();
+    navigate("/home");
   };
 
   return (
@@ -227,6 +252,7 @@ function LogOut() {
 function Activities() {
   return (
     <>
+    <HandleGitHubLogin></HandleGitHubLogin>
       <CreateActivity></CreateActivity>
       <ActivityTotals></ActivityTotals>
       <Heatmap></Heatmap>

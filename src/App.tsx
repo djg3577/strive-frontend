@@ -9,10 +9,10 @@ import UserRoutes from "./routes/UserRoutes";
 function App() {
   const userState = useHookstate(User.state);
   useEffect(() => {
-    const token = userState.token.get() || localStorage.getItem('githubToken');
+    const token = userState.token.get() || localStorage.getItem("githubToken");
     if (!token) return;
     Auth.decodeJWT();
-  }, [userState.token.get()]);
+  }, [userState.token.get(), userState.user.get()]);
 
   return (
     <>

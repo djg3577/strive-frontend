@@ -39,10 +39,11 @@ async function decodeJWT() {
 }
 
 async function loginWithGitHub(code: string) {
+  console.log("CODE", code);
   const { data } = await auth.loginWithGitHub(code);
+// Note we receive a token and a user object
+
   setToken(data.token, 'github');
-  User.state.token.set(data.token);
-  User.state.tokenType.set('github');
   User.state.user.set(data.user);
 }
 
