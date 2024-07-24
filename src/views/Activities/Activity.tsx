@@ -71,11 +71,11 @@ const Heatmap = () => {
       setActivityDates(response.data.activity_dates);
     };
     fetchActivityDates();
-  }, [User.state.user.get()]);
+  }, [User.state.user]);
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mt-8">
       <h2 className="text-2xl font-bold text-red-600 mb-4">Activity Heatmap</h2>
-      <div className="heatmap-container">
+      <div className="heatmap-container ">
         <CalendarHeatmap
           startDate={new Date("2024-01-01")}
           endDate={new Date("2024-12-31")}
@@ -160,7 +160,10 @@ function CreateActivity() {
             placeholder="Enter duration"
           />
         </div>
-        <button type="submit" className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700 w-full">
+        <button
+          type="submit"
+          className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700 w-full"
+        >
           Log Activity
         </button>
       </form>
@@ -172,13 +175,12 @@ function ActivityTotals() {
   const [activityTotals, setActivityTotals] = useState({});
 
   useEffect(() => {
-    console.log("THIS IS RUNNING");
     const fetchActivityTotals = async () => {
       const response = await ActivitiesStore.getActivityTotals();
       setActivityTotals(response.data.activity_totals);
     };
     fetchActivityTotals();
-  }, [User.state.user.get()]);
+  }, [User.state.user]);
 
   const convertMinutesToHoursAndMinutes = (totalMinutes: number) => {
     const hours = Math.floor(totalMinutes / 60);
@@ -228,24 +230,6 @@ function HandleGitHubLogin() {
   return <></>;
 }
 
-const LogOut = () => {
-  const navigate = useNavigate();
-
-  const handleLogOut = () => {
-    Auth.logout();
-    navigate("/home");
-  };
-
-  return (
-    <button 
-      className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700"
-      onClick={handleLogOut}
-    >
-      Log Out
-    </button>
-  );
-};
-
 function Activities() {
   return (
     <div className="font-sans bg-gray-100 min-h-screen">
@@ -258,9 +242,7 @@ function Activities() {
         </div>
         <Heatmap />
         <Leaderboard />
-        <div className="text-center mt-8">
-          <LogOut />
-        </div>
+        <div className="text-center mt-8"></div>
       </div>
     </div>
   );

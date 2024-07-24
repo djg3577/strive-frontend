@@ -9,11 +9,13 @@ export const initialStore = {
   tokenType: getTokenType() || "",
 };
 
-const store = hookstate(initialStore);
+const state = hookstate(initialStore);
 
 async function login(userDTO: UserDTO) {
   const { data } = await auth.login(userDTO);
   setToken(data.token, "jwt");
+  state.token.set(data.token);
+  state.tokenType.set("jwt");
   User.state.token.set(data.token);
   User.state.tokenType.set("jwt");
   User.state.user.set(data.user);
@@ -24,6 +26,8 @@ async function signUp(userDTO: UserDTO) {
     data: { session, user },
   } = await auth.signUp(userDTO);
   setToken(session, "jwt");
+  state.token.set(session);
+  state.tokenType.set("jwt");
   User.state.token.set(session);
   User.state.tokenType.set("jwt");
   User.state.user.set(user);
@@ -39,16 +43,18 @@ async function decodeJWT() {
 }
 
 async function loginWithGitHub(code: string) {
-  console.log("CODE", code);
   const { data } = await auth.loginWithGitHub(code);
-  // Note we receive a token and a user object
-
   setToken(data.token, "github");
+  state.token.set(data.token);
+  state.tokenType.set("github");
+  User.state.token.set(data.token);
+  User.state.tokenType.set("github");
   User.state.user.set(data.user);
 }
 
 function logout() {
   clearToken();
+  state.token.set("");
   User.state.token.set("");
   User.state.tokenType.set("");
   User.state.user.set({
@@ -60,7 +66,7 @@ function logout() {
 }
 
 const Auth = {
-  store,
+  state,
   login,
   signUp,
   validateCode,

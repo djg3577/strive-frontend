@@ -2,7 +2,8 @@
   display: flex;
   width: 700px;
   justify-content: center;
-  margin: 0px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 .color-empty {
