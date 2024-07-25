@@ -5,7 +5,9 @@ import "react-calendar-heatmap/dist/styles.css";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "./heatmap.css";
 import Auth from "@/store/auth";
+import { Tooltip as ReactTooltip, Tooltip } from "react-tooltip";
 import { useNavigate } from "react-router-dom";
+import "react-tooltip/dist/react-tooltip.css";
 
 interface UserScore {
   username: string;
@@ -45,15 +47,15 @@ const Leaderboard = () => {
       <h2 className="text-2xl font-bold text-red-600 mb-4">Leaderboard</h2>
       <table className="w-full">
         <thead>
-          <tr className="text-left">
-            <th className="pb-2">Username</th>
-            <th className="pb-2">Score</th>
+          <tr className="text-center">
+            <th className="pb-2 ">Username</th>
+            <th className="pb-2 ">Score</th>
           </tr>
         </thead>
         <tbody>
           {scores.map((score, index) => (
             <tr key={index} className="border-t">
-              <td className="py-2">{score.username}</td>
+              <td className="py-2 text-center">{score.username}</td>
               <td className="py-2">{score.score}</td>
             </tr>
           ))}
@@ -62,20 +64,29 @@ const Leaderboard = () => {
     </div>
   );
 };
+interface ActivityDate {
+  date: string;
+  count: number;
+}
+const Heatmap: React.FC = () => {
+  const [activityDates, setActivityDates] = useState<ActivityDate[]>([]);
 
-const Heatmap = () => {
-  const [activityDates, setActivityDates] = useState([]);
   useEffect(() => {
     const fetchActivityDates = async () => {
-      const response = await ActivitiesStore.getActivityDates();
-      setActivityDates(response.data.activity_dates);
+      try {
+        const response = await ActivitiesStore.getActivityDates();
+        setActivityDates(response.data.activity_dates);
+      } catch (error) {
+        console.error("Failed to fetch activity dates", error);
+      }
     };
     fetchActivityDates();
   }, [User.state.user]);
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mt-8">
-      <h2 className="text-2xl font-bold text-red-600 mb-4">Activity Heatmap</h2>
-      <div className="heatmap-container ">
+    <div className="bg-white p-6 rounded-lg shadow-md mt-8 truncate">
+      <h2 className="text-2xl font-bold text-red-600 mb-4 ">Activity Heatmap</h2>
+      <div className="heatmap-container truncate">
         <CalendarHeatmap
           startDate={new Date("2024-01-01")}
           endDate={new Date("2024-12-31")}
@@ -85,11 +96,18 @@ const Heatmap = () => {
             if (value.count > 5) return "color-scale-6";
             return `color-scale-${value.count}`;
           }}
-          tooltipDataAttrs={(value: { date: any; count: any }) => ({
-            "data-tip": value.date ? `${value.date}: ${value.count} activities` : "No activities",
-          })}
+          tooltipDataAttrs={(value: { date: any; count: number }) => {
+            if (!value || !value.date) {
+              return { "data-tooltip-id": "heatmap-tooltip", "data-tooltip-content": "No activities" };
+            }
+            return {
+              "data-tooltip-id": "heatmap-tooltip",
+              "data-tooltip-content": `${value.date}: ${value.count} ${value.count === 1 ? "activity" : "activities"}`,
+            };
+          }}
           showWeekdayLabels={true}
         />
+        <Tooltip id="heatmap-tooltip" />
       </div>
     </div>
   );
@@ -98,26 +116,57 @@ const Heatmap = () => {
 function CreateActivity() {
   const [ActivityName, setActivityName] = useState("");
   const [date, setDate] = useState("");
-  const [duration, setDuration] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [hoursError, setHoursError] = useState("");
+  const [minutesError, setMinutesError] = useState("");
   const user = User.state.user.get();
   const userId = user.id;
 
+  const handleHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    if (value > 17) {
+      setHoursError("Hours cannot exceed 17");
+      setHours(17);
+    } else {
+      setHoursError("");
+      setHours(value);
+    }
+  };
+
+  const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    if (value > 59) {
+      setMinutesError("Minutes cannot exceed 59");
+      setMinutes(59);
+    } else {
+      setMinutesError("");
+      setMinutes(value);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (hoursError || minutesError) {
+      return; // Prevent submission if there are errors
+    }
+    const totalDurationInMinutes = hours * 60 + minutes;
     try {
       await ActivitiesStore.createActivity({
         user_id: userId,
         activity_name: ActivityName,
         date: date,
-        duration: duration,
+        duration: totalDurationInMinutes,
       });
       setActivityName("");
       setDate("");
-      setDuration(0);
+      setHours(0);
+      setMinutes(0);
     } catch (error) {
-      console.error("FAILED TO CREATE ACTITVIY", error);
+      console.error("FAILED TO CREATE ACTIVITY", error);
     }
   };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-red-600 mb-4">Log Activity</h2>
@@ -128,7 +177,7 @@ function CreateActivity() {
           </label>
           <input
             type="text"
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
             id="ActivityName"
             value={ActivityName}
             onChange={(e) => setActivityName(e.target.value)}
@@ -141,28 +190,50 @@ function CreateActivity() {
           </label>
           <input
             type="date"
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
             id="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="duration" className="block text-gray-700 font-bold mb-2">
-            Duration (minutes)
-          </label>
-          <input
-            type="number"
-            className="w-full p-2 border rounded"
-            id="duration"
-            value={duration}
-            onChange={(e) => setDuration(Number(e.target.value))}
-            placeholder="Enter duration"
-          />
+          <label className="block text-gray-700 font-bold mb-2">Duration</label>
+          <div className="flex space-x-4">
+            <div className="flex-1">
+              <div className="relative">
+                <input
+                  type="number"
+                  className="w-full pl-3 pr-10 py-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  id="hours"
+                  value={hours}
+                  onChange={handleHoursChange}
+                  min="0"
+                  max="17"
+                />
+                <span className="absolute right-3 top-2 text-gray-400">hrs</span>
+              </div>
+              {hoursError && <p className="text-red-500 text-sm mt-1">{hoursError}</p>}
+            </div>
+            <div className="flex-1">
+              <div className="relative">
+                <input
+                  type="number"
+                  className="w-full pl-3 pr-10 py-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  id="minutes"
+                  value={minutes}
+                  onChange={handleMinutesChange}
+                  min="0"
+                  max="59"
+                />
+                <span className="absolute right-3 top-2 text-gray-400">min</span>
+              </div>
+            </div>
+          </div>
         </div>
         <button
           type="submit"
-          className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700 w-full"
+          className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700 w-full transition duration-300 ease-in-out transform hover:scale-105"
+          disabled={!!hoursError || !!minutesError}
         >
           Log Activity
         </button>
@@ -193,15 +264,15 @@ function ActivityTotals() {
       <table className="w-full">
         <thead>
           <tr className="text-left">
-            <th className="pb-2">Activity</th>
-            <th className="pb-2">Total Time</th>
+            <th className="pb-2 text-center">Activity</th>
+            <th className="pb-2 text-center">Total Time</th>
           </tr>
         </thead>
         <tbody>
           {Object.entries(activityTotals).map(([activity, totalMinutes]) => (
             <tr key={activity} className="border-t">
-              <td className="py-2">{activity}</td>
-              <td className="py-2">{convertMinutesToHoursAndMinutes(totalMinutes as number)}</td>
+              <td className="py-2 pr-2">{activity}</td>
+              <td className="py-2 truncate">{convertMinutesToHoursAndMinutes(totalMinutes as number)}</td>
             </tr>
           ))}
         </tbody>

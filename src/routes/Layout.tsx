@@ -35,7 +35,11 @@ const Layout = () => {
           <nav>
             <ul className="flex space-x-4">
               {navItems.map((item) => (
-                <li key={item.label} onClick={item.command} className="hover:text-gray-300 font-bold text-red-600 cursor-pointer">
+                <li
+                  key={item.label}
+                  onClick={item.command}
+                  className="hover:text-gray-300 font-bold text-red-600 cursor-pointer"
+                >
                   {item.label}
                 </li>
               ))}
