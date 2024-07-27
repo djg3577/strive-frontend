@@ -5,8 +5,7 @@ import "react-calendar-heatmap/dist/styles.css";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "./heatmap.css";
 import Auth from "@/store/auth";
-import { Tooltip as ReactTooltip, Tooltip } from "react-tooltip";
-import { useNavigate } from "react-router-dom";
+import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 
 interface UserScore {
