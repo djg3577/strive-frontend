@@ -6,10 +6,12 @@ const instance = axios.create({
 
 const handleLogout = async () => {
   try {
-    // perform logout
+    // Perform logout
     localStorage.removeItem("token");
+    localStorage.removeItem("githubToken");
+    localStorage.removeItem("tokenType");
 
-    //redirect to login
+    // Redirect to login
     window.location.href = "/";
   } catch (error) {
     console.error(error);
@@ -23,19 +25,19 @@ instance.interceptors.request.use(
     if (token) {
       if (tokenType === "github") {
         config.headers.Authorization = `GitHub ${token}`;
-      } else config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
-    return { ...config };
+    return config;
   },
   (error) => {
     return Promise.reject(error);
   },
 );
 
-// Axios Response interceptor
 instance.interceptors.response.use(
   (response) => {
-    // Log the response headers
     if (response.headers["x-token-expired"] === "true") {
       handleLogout();
     }
