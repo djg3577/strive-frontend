@@ -161,6 +161,7 @@ function CreateActivity() {
       setDate("");
       setHours(0);
       setMinutes(0);
+      window.location.reload();
     } catch (error) {
       console.error("FAILED TO CREATE ACTIVITY", error);
     }
