@@ -115,41 +115,39 @@ const Heatmap: React.FC = () => {
 function CreateActivity() {
   const [ActivityName, setActivityName] = useState("");
   const [date, setDate] = useState("");
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
+  const [hours, setHours] = useState("");
+  const [minutes, setMinutes] = useState("");
   const [hoursError, setHoursError] = useState("");
   const [minutesError, setMinutesError] = useState("");
   const user = User.state.user.get();
   const userId = user.id;
 
   const handleHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    if (value > 17) {
-      setHoursError("Hours cannot exceed 17");
-      setHours(17);
-    } else {
-      setHoursError("");
+    const value = e.target.value;
+    const numValue = Number(value);
+    if (value === "" || (numValue >= 0 && numValue <= 17)) {
       setHours(value);
-    }
-  };
-
-  const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    if (value > 59) {
-      setMinutesError("Minutes cannot exceed 59");
-      setMinutes(59);
+      setHoursError("");
     } else {
-      setMinutesError("");
-      setMinutes(value);
+      setHoursError("Hours must be between 0 and 17");
     }
   };
-
+  const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const numValue = Number(value);
+    if (value === "" || (numValue >= 0 && numValue <= 59)) {
+      setMinutes(value);
+      setMinutesError("");
+    } else {
+      setMinutesError("Minutes must be between 0 and 59");
+    }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (hoursError || minutesError) {
       return; // Prevent submission if there are errors
     }
-    const totalDurationInMinutes = hours * 60 + minutes;
+    const totalDurationInMinutes = (Number(hours) || 0) * 60 + (Number(minutes) || 0);
     try {
       await ActivitiesStore.createActivity({
         user_id: userId,
@@ -159,8 +157,8 @@ function CreateActivity() {
       });
       setActivityName("");
       setDate("");
-      setHours(0);
-      setMinutes(0);
+      setHours("");
+      setMinutes("");
       window.location.reload();
     } catch (error) {
       console.error("FAILED TO CREATE ACTIVITY", error);
