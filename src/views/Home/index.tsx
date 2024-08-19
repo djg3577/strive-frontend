@@ -72,11 +72,16 @@ const Home = () => {
             </button>
           </form>
           <div className="flex justify-center space-x-4 mt-8">
-            {["Facebook", "Twitter", "LinkedIn"].map((platform) => (
-              <a key={platform} href="#" className="text-red-600 hover:text-red-800">
-                {platform}
-              </a>
-            ))}
+            <div className="flex justify-center space-x-4 mt-8">
+              {[
+                { name: "Github", url: "https://github.com/djg3577" },
+                { name: "LinkedIn", url: "https://www.linkedin.com/in/danielguillen0/" },
+              ].map((platform) => (
+                <a key={platform.name} href={platform.url} className="text-red-600 hover:text-red-800">
+                  {platform.name}
+                </a>
+              ))}
+            </div>
           </div>
         </section>
 
