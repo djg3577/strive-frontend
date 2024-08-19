@@ -3,7 +3,7 @@ import GuardedRoute from "./GuardedRoutes";
 import Home from "@/views/Home";
 import Login from "@/views/Auth/Login";
 import SignUp from "@/views/Auth/SignUp";
-import Activities from "@/views/Activities/Activity";
+import Activities from "@/views/Activities/index";
 import Layout from "./Layout";
 
 function UserRoutes() {
