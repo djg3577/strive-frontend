@@ -1,7 +1,7 @@
 import User from "@/store/user";
 import { useHookstate } from "@hookstate/core";
-import useNavigateToPage from "@/hooks/useNavigateToPage";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 type PrivateRouteProps = {
   Component: () => JSX.Element;
@@ -11,7 +11,7 @@ type PrivateRouteProps = {
 
 const GuardedRoute = ({ Component, isPublic, loginRequired }: PrivateRouteProps) => {
   const userState = useHookstate(User.state);
-  const navigateToPage = useNavigateToPage();
+  const navigate = useNavigate();
   const isLoggedIn = userState.token.get().length;
 
   /**
@@ -25,10 +25,10 @@ const GuardedRoute = ({ Component, isPublic, loginRequired }: PrivateRouteProps)
   useEffect(() => {
     if (isPublic) return;
     if (!isLoggedIn && loginRequired) {
-      navigateToPage("/login");
+      navigate("/signup");
     }
     if (isLoggedIn && !loginRequired) {
-      navigateToPage("/");
+      navigate("/");
     }
   }, [isLoggedIn, isPublic, loginRequired]);
   return <Component />;

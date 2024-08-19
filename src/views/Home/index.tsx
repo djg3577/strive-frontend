@@ -1,26 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import striveLogo from "../../assets/STRIVELOGO.png";
-import { useEffect } from "react";
-import Auth from "@/store/auth";
 
 const Home = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchGitHubToken = async (code: string) => {
-      try {
-        await Auth.loginWithGitHub(code);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-    if (code) {
-      fetchGitHubToken(code);
-    }
-  }, [navigate]);
   return (
     <>
       <div className="font-sans">

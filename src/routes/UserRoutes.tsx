@@ -13,7 +13,7 @@ function UserRoutes() {
         <Route path="/signUp" element={<GuardedRoute Component={SignUp} isPublic />} />
         <Route path="/home" element={<GuardedRoute Component={Home} isPublic />} />
         <Route path="/login" element={<GuardedRoute Component={Login} isPublic />} />
-        <Route path="/activities" element={<GuardedRoute Component={Activities} isPublic />} />
+        <Route path="/activities" element={<GuardedRoute Component={Activities} loginRequired />} />
         <Route path="*" element={<GuardedRoute Component={Home} isPublic />} />
       </Route>,
     ),
