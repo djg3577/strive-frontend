@@ -4,8 +4,6 @@ import { createContext } from "react";
 
 type SignUpContextInitialState = {
   control: Control<SignUpForm>;
-  step: number;
-  loading: boolean;
   handleSubmit: UseFormHandleSubmit<SignUpForm, SignUpForm>;
   getValues: () => Partial<SignUpForm>;
   createUser: () => Promise<void>;
