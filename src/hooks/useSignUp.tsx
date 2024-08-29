@@ -16,8 +16,6 @@ export type SignUpForm = {
  * @returns An object containing the current role, step, select function, createUser function, control object, and Provider component.
  */
 function useSignUp() {
-
-
   const { control, handleSubmit, getValues } = useForm<SignUpForm>();
 
   const createUser = handleSubmit(async (data: SignUpForm) => {
@@ -26,7 +24,7 @@ function useSignUp() {
     } catch (e: any) {
       const { message } = e.response.data;
       console.log(message);
-    } 
+    }
   });
 
   const validateCode = handleSubmit(async (data: SignUpForm) => {

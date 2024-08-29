@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import striveLogo from "../../assets/STRIVELOGO.png";
+import User from "@/store/user";
 
 const Home = () => {
   const navigate = useNavigate();
+  const isLoggedIn = User.state.user.username.get()
+
   return (
     <>
       <div className="font-sans">
@@ -23,11 +26,11 @@ const Home = () => {
               <p className="text-2xl font-semibold">Crush your goals easily</p>
               <button
                 onClick={() => {
-                  navigate("/signup");
+                  isLoggedIn ? navigate("/activities") : navigate("/signup");
                 }}
                 className="bg-white text-red-600 px-10 py-3 rounded-full font-bold hover:bg-red-100 transition duration-300"
               >
-                Get Started
+                {isLoggedIn ? "Go To My Activities" : "Get Started"}
               </button>
             </div>
           </div>
@@ -58,26 +61,15 @@ const Home = () => {
           </div>
         </section>
 
-        <section id="contact" className="py-20">
-          <h2 className="text-3xl font-bold text-center mb-12">Send Your Feedback</h2>
-          <form className="max-w-lg mx-auto">
-            <input type="text" placeholder="Name" required className="w-full mb-4 p-2 border rounded" />
-            <input type="email" placeholder="Email" required className="w-full mb-4 p-2 border rounded" />
-            <textarea placeholder="Message" required className="w-full mb-4 p-2 border rounded h-32"></textarea>
-            <button
-              type="submit"
-              className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700 w-full"
-            >
-              Send Message
-            </button>
-          </form>
+        <section id="contact" className="py-20 bg-gray-100">
+          <h2 className="text-3xl font-bold text-center mb-12">Feel Free To Connect With Me :)</h2>
           <div className="flex justify-center space-x-4 mt-8">
-            <div className="flex justify-center space-x-4 mt-8">
+            <div className="flex justify-center space-x-4">
               {[
                 { name: "Github", url: "https://github.com/djg3577" },
                 { name: "LinkedIn", url: "https://www.linkedin.com/in/danielguillen0/" },
               ].map((platform) => (
-                <a key={platform.name} href={platform.url} className="text-red-600 hover:text-red-800">
+                <a key={platform.name} href={platform.url} className="text-red-600 hover:text-red-800 text-3xl">
                   {platform.name}
                 </a>
               ))}
