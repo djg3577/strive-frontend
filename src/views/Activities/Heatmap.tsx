@@ -6,25 +6,10 @@ import CalendarHeatmap from "react-calendar-heatmap";
 import "./heatmap.css";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import useHeatmap from "@/hooks/useHeatmap";
 
-interface ActivityDate {
-  date: string;
-  count: number;
-}
 export const Heatmap: React.FC = () => {
-  const [activityDates, setActivityDates] = useState<ActivityDate[]>([]);
-
-  useEffect(() => {
-    const fetchActivityDates = async () => {
-      try {
-        const response = await ActivitiesStore.getActivityDates();
-        setActivityDates(response.data.activity_dates);
-      } catch (error) {
-        console.error("Failed to fetch activity dates", error);
-      }
-    };
-    fetchActivityDates();
-  }, [User.state.user]);
+  const activityDates = useHeatmap();
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mt-8 truncate">

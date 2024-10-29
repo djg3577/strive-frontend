@@ -1,23 +1,8 @@
-import ActivitiesStore from "@/store/activity";
-import User from "@/store/user";
-import { useState, useEffect } from "react";
+import useActivityTotals from "@/hooks/useActivityTotals";
 
 export function ActivityTotals() {
-  const [activityTotals, setActivityTotals] = useState({});
+  const { activityTotals, convertMinutesToHoursAndMinutes } = useActivityTotals();
 
-  useEffect(() => {
-    const fetchActivityTotals = async () => {
-      const response = await ActivitiesStore.getActivityTotals();
-      setActivityTotals(response.data.activity_totals);
-    };
-    fetchActivityTotals();
-  }, [User.state.user]);
-
-  const convertMinutesToHoursAndMinutes = (totalMinutes: number) => {
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    return `${hours} hours ${minutes} minutes`;
-  };
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-red-600 mb-4">Activity Totals</h2>

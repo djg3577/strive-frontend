@@ -26,7 +26,6 @@ export const Leaderboard = () => {
     socket.onclose = (event) => {
       console.log("WebSocket connection closed:", event);
     };
-    // !! INVESTIGATE WHT IT CLOSES IMMEDIATELY BUT IT STILL WORKS
     return () => {
       console.log("Cleaning up WebSocket connection");
       socket.close();
