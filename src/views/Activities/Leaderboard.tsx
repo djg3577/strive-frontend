@@ -1,37 +1,7 @@
-import { useEffect, useState } from "react";
+import { useLeaderboard } from "@/hooks/useLeaderboard";
 
-interface UserScore {
-  username: string;
-  score: number;
-}
 export const Leaderboard = () => {
-  const [scores, setScores] = useState<UserScore[]>([]);
-
-  useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8080/ws");
-
-    socket.onopen = () => {
-      console.log("WebSocket connection established");
-    };
-
-    socket.onmessage = (event) => {
-      const message: UserScore[] = JSON.parse(event.data);
-      setScores(message.sort((a, b) => b.score - a.score)); // Sort in descending order
-    };
-
-    socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    socket.onclose = (event) => {
-      console.log("WebSocket connection closed:", event);
-    };
-    return () => {
-      console.log("Cleaning up WebSocket connection");
-      socket.close();
-    };
-  }, []);
-
+  const { scores } = useLeaderboard();
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mt-8">
       <h2 className="text-2xl font-bold text-red-600 mb-4">Leaderboard</h2>

@@ -1,6 +1,3 @@
-import ActivitiesStore from "@/store/activity";
-import User from "@/store/user";
-import { useEffect, useState } from "react";
 import "react-calendar-heatmap/dist/styles.css";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "./heatmap.css";

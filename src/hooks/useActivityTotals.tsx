@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 function useActivityTotals() {
   const [activityTotals, setActivityTotals] = useState({});
-  
+
   const fetchActivityTotals = async () => {
     const response = await ActivitiesStore.getActivityTotals();
     setActivityTotals(response.data.activity_totals);
@@ -21,7 +21,7 @@ function useActivityTotals() {
 
   useEffect(() => {
     setup();
-  }, []);
+  }, [activityTotals]);
 
   return { convertMinutesToHoursAndMinutes, activityTotals };
 }

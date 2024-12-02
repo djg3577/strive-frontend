@@ -2,9 +2,6 @@ import { UserDTO } from "@/interfaces/auth/auth";
 import axios from "./axios";
 
 export default {
-  login(credentials: UserDTO) {
-    return axios.post("/auth/login", credentials);
-  },
   signUp(credentials: UserDTO) {
     return axios.post("/auth/sign-up", credentials);
   },
